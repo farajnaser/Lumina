@@ -1,0 +1,116 @@
+/* Custom Styles */
+
+/* Base transitions */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scroll Animations */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-100 {
+    transition-delay: 0.1s;
+}
+
+.delay-200 {
+    transition-delay: 0.2s;
+}
+
+.delay-300 {
+    transition-delay: 0.3s;
+}
+
+.slide-left {
+    transform: translateX(-50px);
+}
+
+.slide-left.is-visible {
+    transform: translateX(0);
+}
+
+.slide-right {
+    transform: translateX(50px);
+}
+
+.slide-right.is-visible {
+    transform: translateX(0);
+}
+
+/* --- Fade Up Animation (for Hero) --- */
+@keyframes fade-up {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-up {
+    animation: fade-up 0.8s ease-out forwards;
+}
+
+/* --- Swing Animation --- */
+@keyframes swing {
+    0% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes pull {
+    0% {
+        transform: scaleY(1);
+    }
+
+    50% {
+        transform: scaleY(1.3);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+.pull-animation {
+    animation: pull 0.3s ease-in-out;
+}
+
+/* --- Light/Dark State --- */
+.light-is-on #lamp-glow {
+    opacity: 0.8;
+}
+
+#lamp-cord-wrapper {
+    cursor: grab;
+}
+
+#lamp-cord-wrapper:active {
+    cursor: grabbing;
+}
+
+/* Hide Scrollbar for Horizontal Scroll */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
