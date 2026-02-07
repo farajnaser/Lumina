@@ -260,27 +260,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.appendChild(clone);
             });
 
-            let isPaused = false;
-            let scrollPos = 0;
-            const scrollSpeed = 0.9; // Smooth passing speed
+            // RTL check
+            const isRTL = getComputedStyle(container).direction === 'rtl';
 
-            const step = () => {
-                if (!isPaused) {
-                    scrollPos += scrollSpeed;
-                    if (scrollPos >= container.scrollWidth / 2) {
-                        scrollPos = 0;
+            // Calculate exact reset point (distance between first item and its clone)
+            const firstItem = originalItems[0];
+            const firstClone = container.children[originalItems.length];
+
+            // Wait for next frame to ensure layouts are stable
+            setTimeout(() => {
+                const resetPoint = Math.abs(firstClone.offsetLeft - firstItem.offsetLeft);
+
+                let isPaused = false;
+                let scrollPos = 0;
+                const scrollSpeed = 0.8;
+
+                const step = () => {
+                    if (!isPaused) {
+                        scrollPos += scrollSpeed;
+                        if (scrollPos >= resetPoint) {
+                            scrollPos = 0;
+                        }
+                        // In RTL, we scroll by setting a negative scrollLeft to move left
+                        container.scrollLeft = isRTL ? -scrollPos : scrollPos;
                     }
-                    container.scrollLeft = scrollPos;
-                }
+                    requestAnimationFrame(step);
+                };
+
+                container.addEventListener('mouseenter', () => isPaused = true);
+                container.addEventListener('mouseleave', () => isPaused = false);
+                container.addEventListener('touchstart', () => isPaused = true, { passive: true });
+                container.addEventListener('touchend', () => setTimeout(() => isPaused = false, 1500), { passive: true });
+
                 requestAnimationFrame(step);
-            };
-
-            container.addEventListener('mouseenter', () => isPaused = true);
-            container.addEventListener('mouseleave', () => isPaused = false);
-            container.addEventListener('touchstart', () => isPaused = true, { passive: true });
-            container.addEventListener('touchend', () => setTimeout(() => isPaused = false, 1500), { passive: true });
-
-            requestAnimationFrame(step);
+            }, 100);
         };
 
         // Initialize when DOM is ready
